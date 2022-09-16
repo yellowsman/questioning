@@ -4,10 +4,12 @@ defmodule Questioning.BuildQuestion do
   """
   
 
+  @spec build(filepath :: String.t()) :: list(tuple())
   def build(filepath) do
     answer = Path.basename(filepath)
     data = File.read!(filepath)
-           |> String.split
+           |> String.split("\n")
+           |> Enum.reject(fn x -> String.trim(x) == "" end)
     Enum.map(data, fn x -> {x,answer} end)
   end
 end

@@ -10,7 +10,7 @@ defmodule Questioning.Answer do
   def judge({_question, answer}) do
     IO.gets("answer: ")
     |> String.trim()
-    |> Kernel.===(answer)
+    |> String.starts_with?(answer)
     |> result()
   end
 
