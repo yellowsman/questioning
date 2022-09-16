@@ -9,6 +9,7 @@ defmodule Questioning.BuildQuestion do
     answer = Path.basename(filepath)
     data = File.read!(filepath)
            |> String.split("\n")
+           |> Enum.uniq()
            |> Enum.reject(fn x -> String.trim(x) == "" end)
     Enum.map(data, fn x -> {x,answer} end)
   end
