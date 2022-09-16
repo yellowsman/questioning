@@ -10,10 +10,13 @@ defmodule Questioning.Answer do
   def judge({_question, answer}) do
     IO.gets("answer: ")
     |> String.trim()
-    |> String.starts_with?(answer)
-    |> result()
+    |> sanitize()
+    |> Kernel.then(&String.starts_with?(sanitize(answer), &1))
+    |> result(answer)
   end
 
-  defp result(true), do: "YES!"
-  defp result(false), do: "Bad!"
+  defp result(true, ans), do: "YES!: " <> ans
+  defp result(false, ans), do: "Bad!: " <> ans
+
+  defp sanitize(word), do: word |> String.downcase() |> String.replace(" ", "")
 end
