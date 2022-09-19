@@ -6,17 +6,23 @@ defmodule Questioning.Answer do
   @doc """
   ユーザーから回答をもらって正答したかどうかを判定する
   """
+  # typescpe通りに返せてねえ
   @spec judge(data :: tuple()) :: boolean()
-  def judge({_question, answer}) do
-    IO.gets("answer: ")
+  def judge({_question, correct}) do
+    IO.gets("answer: ") 
     |> String.trim()
-    |> sanitize()
-    |> Kernel.then(&String.starts_with?(sanitize(answer), &1))
-    |> result(answer)
+    |> _judge(correct)
   end
 
-  defp result(true, ans), do: "YES!: " <> ans
-  defp result(false, ans), do: "Bad!: " <> ans
+  @spec show_result(result :: boolean(), answer :: String.t()) :: String.t()
+  def show_result(true, ans), do: "YES!: " <> ans
+  def show_result(false, ans), do: "Bad!: " <> ans
+
+
+  defp _judge("", _), do: false
+  defp _judge(answer, correct) do
+    String.starts_with?(sanitize(correct), sanitize(answer))
+  end
 
   defp sanitize(word), do: word |> String.downcase() |> String.replace(" ", "")
 end
